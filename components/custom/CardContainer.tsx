@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Separator } from "../ui/separator";
 import { Slider } from "../ui/slider";
-
+import NumberTicker from "../magicui/number-ticker";
+import { Check, Loader2 } from "lucide-react";
 export const CardContainer = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [arr, setArr] = useState([1]);
@@ -68,7 +69,7 @@ export const CardContainer = () => {
       default:
         break;
     }
-  }, [arr]);
+  }, [growth]);
 
   const handleClick = () => {
     // Animate cards
@@ -115,7 +116,7 @@ export const CardContainer = () => {
         <div className="flex flex-col justify-start items-center w-full">
           <span className="flex flex-row justify-between items-center w-full mb-2">
             <p className="text-sm">YoY ARR growth </p>
-            <p className="text-xs text-neutral-500 font-mono">$0-3T</p>
+            <p className="text-xs text-neutral-500 font-mono">{growthValue}</p>
           </span>
           <Slider
             defaultValue={growth}
@@ -141,26 +142,42 @@ export const CardContainer = () => {
               we don't check anything
             </p>
           </span>
-          <p className="h-full flex flex-col justify-center w-full text-3xl font-medium text-center">
-            ${formatNumber(arr[0] * growth[0] * 1000)}M
-          </p>
+          <span className="h-full flex flex-row justify-center items-center w-full text-3xl font-medium text-center">
+            $<NumberTicker value={arr[0] * growth[0] * 1000} />M
+          </span>
         </div>
         <div
           className={cn(
-            "bg-white w-full max-w-[75%] border rounded-lg p-2 absolute -translate-y-2 z-10 transition-all delay-100 duration-400 h-28 shadow-sm",
+            "bg-white w-full max-w-[75%] border rounded-lg p-2 absolute -translate-y-2 z-10 transition-all delay-2000 duration-400 h-28 shadow-sm flex flex-col justify-center items-center",
             isClicked ? "scale-75 translate-y-9 opacity-0" : "scale-95"
           )}
         >
-          2
+          <p className="font-medium">Check your bank</p>
+          <span className="text-blue-500 flex flex-row justify-center items-center mt-2 font-medium rounded-full p-2 bg-blue-50 gap-2">
+            <Loader2 className="h-4 w-4 animate-spin" />
+            <p className="text-sm">Sending</p>
+          </span>
         </div>
         <div
           className={cn(
-            "bg-white w-full max-w-[75%] border rounded-lg p-2 absolute -translate-y-4 z-0 scale-90 transition-all delay-1000 duration-400 h-28 shadow-sm",
+            "bg-white w-full max-w-[75%] border rounded-lg p-2 absolute -translate-y-4 z-0 scale-90 transition-all delay-4000 duration-400 h-28 shadow-sm flex flex-col justify-center items-center",
             isClicked ? "translate-y-9 opacity-0 scale-75" : "scale-90"
           )}
         >
-          1
+          <p className="font-medium">Transfered</p>
+          <span className="text-emerald-500 flex flex-row justify-center items-center mt-2 font-medium rounded-full p-2 bg-emerald-50 gap-2">
+            <Check className="h-4 w-4" />
+            <p className="text-sm">
+              You are ${arr[0] * growth[0] * 1000}M richer
+            </p>
+          </span>
         </div>
+        <span className="flex flex-col justify-start items-center">
+          <p>Customize it here</p>
+          <p className="text-neutral-500 text-sm underline hover:text-neutral-600 transition-all">
+            Github repo
+          </p>
+        </span>
       </div>
       <span>
         <p className="text-center w-full text-lg font-medium">
